@@ -5,21 +5,21 @@ class JsonTodoStorage implements TodoStorage{
 
   @override
   Future<List<Todo>> loadTodos(){
-    return List[];
+    return Future.value([]);
   }
 
   @override
-  Future<void> addTodo(Todo todo){
-
+  Future<List<Todo>> addTodo(Todo todo){
+    return Future.value([todo]);
   }
 
   @override
-  Future<void> deleteTodo(int id){
-    
+  Future<List<Todo>> deleteTodo(int id){
+    return Future.value([]);
   }
 
   @override
-  Future<void> updateTodo(Todo todo){
-
+  Future<List<Todo>> updateTodo(Todo todo){
+    return Future.value([todo]);
   }
 }

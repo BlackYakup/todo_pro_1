@@ -17,9 +17,9 @@ class TodoPro extends StatelessWidget {
     return MaterialApp(
       title: 'Todo Pro',
       theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const Dashboard(title: 'Flutter Demo Home Page'),
+      // home: const Dashboard(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -27,6 +27,7 @@ class TodoPro extends StatelessWidget {
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
 
+  @override
   State<Dashboard> createState() => _DashboardState();
 }
 
