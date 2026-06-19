@@ -7,9 +7,7 @@ final todoStorageProvider = Provider<TodoStorage>((ref) {
   return DbTodoStorage();
 });
 
-final todoNotifierProvider = AsyncNotifierProvider<TodoNotifier, List<Todo>>(
-  TodoNotifier.new,
-);
+final todoNotifierProvider = AsyncNotifierProvider<TodoNotifier, List<Todo>>(TodoNotifier.new);
 
 class TodoNotifier extends AsyncNotifier<List<Todo>> {
   late final TodoStorage _storage;
@@ -35,6 +33,13 @@ class TodoNotifier extends AsyncNotifier<List<Todo>> {
   Future<void> updateTodo(Todo todo) async {
     state = const AsyncValue.loading();
     final newTodos = await _storage.updateTodo(todo);
+    state = AsyncValue.data(newTodos);
+  }
+
+  Future<void> updateTodoTitle(Todo todo, String title) async {
+    state = const AsyncValue.loading();
+    final newTodo = todo.copyWith(title: title);
+    final newTodos = await _storage.updateTodo(newTodo);
     state = AsyncValue.data(newTodos);
   }
 }

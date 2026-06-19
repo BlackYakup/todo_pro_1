@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../models/todo.dart';
-import '../providers/todo_providers.dart';
+import 'package:todo_pro/features/todo/widgets/todo_tile.dart';
+import 'package:todo_pro/features/todo/models/todo.dart';
+import 'package:todo_pro/features/todo/providers/todo_providers.dart';
 
 class TodoScreen extends ConsumerStatefulWidget {
   const TodoScreen({super.key});
@@ -27,11 +27,7 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
       return;
     }
 
-    final todo = Todo(
-      id: DateTime.now().microsecondsSinceEpoch,
-      title: title,
-      isDone: false,
-    );
+    final todo = Todo(id: DateTime.now().microsecondsSinceEpoch, title: title, isDone: false);
 
     await ref.read(todoNotifierProvider.notifier).addTodo(todo);
     _titleController.clear();
@@ -52,18 +48,12 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
                 Expanded(
                   child: TextField(
                     controller: _titleController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Neue Aufgabe',
-                    ),
+                    decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'Neue Aufgabe'),
                     onSubmitted: (_) => _addTodo(),
                   ),
                 ),
                 const SizedBox(width: 12),
-                FilledButton(
-                  onPressed: _addTodo,
-                  child: const Text('Hinzufügen'),
-                ),
+                FilledButton(onPressed: _addTodo, child: const Text('Hinzufügen')),
               ],
             ),
             const SizedBox(height: 16),
@@ -71,9 +61,7 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
               child: todos.when(
                 data: (todos) {
                   if (todos.isEmpty) {
-                    return const Center(
-                      child: Text('Noch keine Aufgaben vorhanden.'),
-                    );
+                    return const Center(child: Text('Noch keine Aufgaben vorhanden.'));
                   }
 
                   return ListView.separated(
@@ -82,40 +70,11 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
                     itemBuilder: (context, index) {
                       final todo = todos[index];
 
-                      return ListTile(
-                        leading: Checkbox(
-                          value: todo.isDone,
-                          onChanged: (isDone) {
-                            ref
-                                .read(todoNotifierProvider.notifier)
-                                .updateTodo(
-                                  todo.copyWith(isDone: isDone ?? false),
-                                );
-                          },
-                        ),
-                        title: Text(
-                          todo.title,
-                          style: TextStyle(
-                            decoration: todo.isDone
-                                ? TextDecoration.lineThrough
-                                : null,
-                          ),
-                        ),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.delete_outline),
-                          tooltip: 'Loeschen',
-                          onPressed: () {
-                            ref
-                                .read(todoNotifierProvider.notifier)
-                                .deleteTodo(todo.id);
-                          },
-                        ),
-                      );
+                      return TodoTile(todo: todo);
                     },
                   );
                 },
-                error: (error, stackTrace) =>
-                    Center(child: Text('Fehler beim Laden: $error')),
+                error: (error, stackTrace) => Center(child: Text('Fehler beim Laden: $error')),
                 loading: () => const Center(child: CircularProgressIndicator()),
               ),
             ),

@@ -3,10 +3,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-
-import 'features/todo/screens/todo_screen.dart';
+import 'package:todo_pro/features/todo/screens/todo_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,9 +24,7 @@ class TodoPro extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Todo Pro',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
       home: const TodoScreen(),
     );
   }

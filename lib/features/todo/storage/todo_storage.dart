@@ -1,7 +1,6 @@
-import '../models/todo.dart';
+import 'package:todo_pro/features/todo/models/todo.dart';
 
 abstract interface class TodoStorage {
-  
   Future<List<Todo>> loadTodos();
 
   Future<List<Todo>> addTodo(Todo todo);
