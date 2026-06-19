@@ -1,12 +1,22 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+import 'features/todo/screens/todo_screen.dart';
 
 void main() {
-  runApp(
-    ProviderScope(
-      child: TodoPro()
-    )
-  );
+  WidgetsFlutterBinding.ensureInitialized();
+
+  if (!kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
+
+  runApp(const ProviderScope(child: TodoPro()));
 }
 
 class TodoPro extends StatelessWidget {
@@ -17,27 +27,9 @@ class TodoPro extends StatelessWidget {
     return MaterialApp(
       title: 'Todo Pro',
       theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const Dashboard(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
-
-  State<Dashboard> createState() => _DashboardState();
-}
-
-class _DashboardState extends State<Dashboard> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        
-      ),
+      home: const TodoScreen(),
     );
   }
 }
